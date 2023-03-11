@@ -5,17 +5,17 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/input1')">
+            <v-btn icon @click="movePage('/input2')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力２
+                入力3
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input3')">
+            <v-btn icon @click="movePage('/input4')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -25,7 +25,7 @@
         <v-main>
             <div class="mx-3 my-5">
                 <h1 class="my-3">
-                    あなたの基礎疾患<br>
+                    あなたの既往歴<br>
                     についてお伺いします。
                 </h1>
 
@@ -54,19 +54,6 @@
                                 >
                                 </v-checkbox>
                             </v-row>
-                            <template v-if="g.question && g.checked">
-                                <v-row>
-                                    <v-textarea
-                                        :label="g.question"
-                                        rows="2"
-                                        v-model="g.text"
-                                        :disabled="!g.checked"
-                                        :placeholder="g.checked ? g.placeholder : ''"
-                                        dense
-                                    >
-                                    </v-textarea>
-                                </v-row>
-                            </template>
                         </div>
                         <div v-else class="d-none">
                             <v-checkbox
@@ -82,7 +69,7 @@
                 <v-btn
                     class="pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input3')"
+                    @click="movePage('/input4')"
                     block
                 >
                     <span>
@@ -100,7 +87,7 @@
 <script>
 //import utils from '@/common/utils.js'
 
-const healthProfile = [
+const medicalHistories = [
     // 外部から入力
     {label:'該当しない',question:'',placeholder:'',error:''},
     {label:'妊娠',question:'妊娠何週目ですか？',placeholder:'',error:''},
@@ -114,10 +101,6 @@ const healthProfile = [
     {label:'血液疾患（貧血等）',question:'具体的に教えてください',placeholder:'',error:''},
     {label:'免疫不全（HIV、免疫抑制剤使用含む）',question:'HIV、免疫抑制剤使用含む。具体的に教えてください。',placeholder:'',error:''},
     {label:'悪性腫瘍（がん）',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'その他',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'ワクチン',question:'ワクチンの接種回数を入力してください',placeholder:'未接種の場合は0と入力してください',error:'',text:'', checked:'ture'},
-    {label:'感染歴',question:'感染回数を入力してください',placeholder:'1度も無い場合は0と入力してください',error:'',text: '', checked:'ture'}, 
-    {label:'感染ルート',question:'感染ルートは判明していますか？',placeholder:'「はい」か「いいえ」、正確に判明している場合具体的に入力してください',error:'',text: '', checked:'ture'}, 
     ]
 
 export default {
@@ -150,8 +133,8 @@ export default {
                         }, ...
                 }
                 */
-            sickList: undefined,
-                // $state.workData.sickList
+            sickList: medicalHistories,
+                //medicalHistories
                 //healthRecordの作業用オブジェクト
                 /*
                     healthProfile + 
@@ -169,22 +152,7 @@ export default {
     },
     methods: {
         updateFormData: function() {
-            // copy workData.sickList back into formData.healthRecord.
-            if (this.$refs.baseform.validate()) {
-                let w = this.workData.sickList
-                for (let i = 0; i < w.length; i++) {
-                    if (w[i].checked === true) {
-                        this.formData.healthRecord[w[i].label] = {
-                            text: w[i].text === null ? '' : w[i].text,
-                            question: w[i].question,
-                        }
-                    } else {
-                        delete(this.formData.healthRecord[w[i].label])
-                    }
-                }
-                // update formData
-                //this.$store.commit('updateFormData', this.formData)
-            }
+            
         },
         movePage: function(pageName) {
             if (this.$refs.baseform.validate()) {
@@ -194,53 +162,7 @@ export default {
         },
     },
     mounted: function() {
-        this.formData = this.$store.state.formData
-        this.workData = this.$store.state.workData
-        // initialize healthRecord
-        if (!this.formData.healthRecord) {
-            this.formData.healthRecord = {}
-        }
         // create sickList
-        if (!this.workData.sickList) {
-            this.workData.sickList = []
-            let w = this.workData.sickList
-            for (let i = 0; i < healthProfile.length; i++) {
-                let profile = healthProfile[i]
-                let ks = Object.keys(this.formData.healthRecord).filter(k => k === profile.label)
-                if (ks.length == 1) {
-                    let obj = this.formData.healthRecord[ks[0]]
-                    // found the label in formData.healthRecord
-                    if (obj.label == 'ワクチン' || obj.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: obj.text !== null ? true : false,
-                            text: obj.text,
-                        }))
-                    }
-                } else if (ks.length > 1) {
-                    throw `ERROR: label=${profile.label} ks.length = ${ks.length}`
-                } else {
-                    // ks == []: LABELが存在しなかった。
-                    // ks == undefined: サーバからhealthRecordを渡された。
-                    if (profile.label == 'ワクチン' || profile.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: false,
-                            text: null,
-                        }))
-                    }
-                }
-            }
-        }
-        this.sickList = this.workData.sickList
     }
 }
 </script>

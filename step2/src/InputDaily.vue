@@ -1,7 +1,7 @@
 <template>
     <v-app>
 
-        <v-app-bar color="#03AF7A" class="text-center"
+        <v-app-bar color="#3DB0F3" class="text-center"
                 elevation="0"
                 dense
                 app
@@ -110,6 +110,11 @@
                                         v-model="dav.what.text"
                                         >
                                     </v-text-field>
+                                    <v-text-field
+                                        label="マスクを着用していましたか？"
+                                        v-model="dav.what.text"
+                                        >
+                                    </v-text-field>
                                 </div>
                             </v-container>
 
@@ -199,8 +204,8 @@
                                 <v-subheader class="daily-input-section white--text">「どこで」</v-subheader>
                                 <v-text-field
                                     v-model="dav.where.text"
-                                    label="施設名・場所名を教えてください。"
-                                    placeholder="例) スターバックス〇〇店、イオンモール〇〇店のフードコート"
+                                    label="施設名・場所名を詳細に教えてください。"
+                                    placeholder="例) 北見工科大学〇〇教室、〇〇ゼミ室、〇〇マンション〇〇号室"
                                 >
                                 </v-text-field>
                                 <v-text-field
@@ -341,7 +346,7 @@
                         </v-btn>
                         <v-btn
                             class="pa-5 ml-2 white--text"
-                            color="#03AF7A"
+                            color="#3DB0F3"
                             @click="movePage('/daily')"
                         >
                             <span>

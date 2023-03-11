@@ -35,7 +35,7 @@ h1.entry {
 h2 {
     font-size:1.14rem;
     font-weight: bold;
-    background-color: #03AF7A;
+    background-color: #3DB0F3;
     color:#FFF;
     padding:1rem;
     margin:0 -30px;
@@ -55,7 +55,7 @@ p {
 }
 
 .entry-bg {
-    background-color: #03AF7A;
+    background-color: #3DB0F3;
 }
 .basefont {
     font-family: 'M PLUS Rounded 1c';
@@ -63,18 +63,18 @@ p {
     font-weight: bolder;
 }
 .header {
-    background-color: #03AF7A;
+    background-color: #3DB0F3;
     color:#FFF;
     font-size:1rem;
     font-weight: bold;
 }
 .entry-body {
-    background-color: #03AF7A;
+    background-color: #3DB0F3;
 }
 .workplace-header {
     padding:6px 0px 6px 8px;
-    border-left:6px solid rgb(3 175 122);
-    background: rgba(3,175,122,0.1);
+    border-left:6px solid rgb(61 176 243);
+    background: rgba(61,176,243,0.1);
     margin-top:2rem;
 }
 .daily-input-title .v-messages {
@@ -84,7 +84,7 @@ p {
 .daily-input-section {
     font-size:1.14rem;
     font-weight: bold;
-    background-color: #03AF7A;
+    background-color: #3DB0F3;
 }
 .btn-tag{
     margin-top: 8px;

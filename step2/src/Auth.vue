@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar color="#03AF7A" class="basefont white--text text-center"
+        <v-app-bar color="#3DB0F3" class="basefont white--text text-center"
                    elevation="0"
                    dense
                    app>
@@ -84,7 +84,7 @@
 
                 <v-btn
                     class="white--text pa-5"
-                    color="#03AF7A"
+                    color="#3DB0F3"
                     @click="sendAuth"
                     block
                 >
@@ -128,17 +128,9 @@ export default {
                 utils.async_post(`${process.env.VUE_APP_SERVER_URL}/a`,
                     this.formData)
                     .then(ret => {
-                        if (ret.code == 200) {
-                            this.$store.state.authed = true
+                        this.$store.state.authed = true
                             this.$store.state.formData = ret.data
                             this.$router.push('/input1')
-                        } else if (ret.code == 406) {
-                            this.$store.state.responseData = ret
-                            this.$router.push('/autherror')
-                        } else {
-                            this.$store.state.responseData = ret
-                            this.$router.push('/error')
-                        }
                     })
             }
         },

@@ -1,11 +1,11 @@
 <template>
     <v-app>
 
-        <v-app-bar color="#03AF7A" class="text-center"
+        <v-app-bar color="#3DB0F3" class="text-center"
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/input3')">
+            <v-btn icon @click="movePage('/input6')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>

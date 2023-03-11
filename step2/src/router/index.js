@@ -8,6 +8,10 @@ import Step2Input1 from '@/Step2Input1'
 import Step2Input2 from '@/Step2Input2'
 import Step2Input3 from '@/Step2Input3'
 import Step2Input4 from '@/Step2Input4'
+import Step2Input5 from '@/Step2Input5'
+import Step2Input6 from '@/Step2Input6'
+import Step2Input7 from '@/Step2Input7'
+import Step2Input8 from '@/Step2Input8'
 import InputDaily from '@/InputDaily'
 import Step2Break from '@/Step2Break'
 import End from '@/End'
@@ -48,8 +52,8 @@ const routes = [
         meta: { authRequired: true },
     },
     {
-        path: '/input3',
-        name: 'input3',
+        path: '/input4',
+        name: 'input4',
         component: Step2Input3,
         meta: { authRequired: true },
     },
@@ -75,6 +79,30 @@ const routes = [
         path: '/end',
         name: 'end',
         component: End,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input5',
+        name: 'input5',
+        component: Step2Input5,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input7',
+        name: 'input7',
+        component: Step2Input6,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input6',
+        name: 'input6',
+        component: Step2Input7,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input3',
+        name: 'input3',
+        component: Step2Input8,
         meta: { authRequired: true },
     },
     {

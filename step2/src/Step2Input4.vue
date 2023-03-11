@@ -1,7 +1,7 @@
 <template>
     <v-app>
 
-        <v-app-bar color="#03AF7A" class="text-center"
+        <v-app-bar color="#3DB0F3" class="text-center"
                    elevation="0"
                    dense
                    app>
@@ -47,7 +47,7 @@
 
                 <v-btn
                     class="white--text"
-                    color="#03AF7A"
+                    color="#3DB0F3"
                     @click="movePage('/end', true)"
                     block
                 >

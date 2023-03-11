@@ -1,23 +1,23 @@
 <template>
     <v-app>
 
-        <v-app-bar color="#03AF7A" class="text-center"
+        <v-app-bar color="#3DB0F3" class="text-center"
             elevation="0"
             dense
             app
         >
-            <v-btn icon @click="movePage('/input2')">
+            <v-btn icon @click="movePage('/input3')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力３
+                入力4
             </v-app-bar-title>
             <v-spacer></v-spacer>
             <!-- ここは将来的にはdisableにする。 -->
-            <v-btn icon @click="movePage('/break')">
+            <v-btn icon @click="movePage('/input5')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -36,7 +36,7 @@
                     該当<rt>がいとう</rt></ruby>
                     する
                     <ruby>
-                    日付<rt>ひづけ</rt></ruby>
+                    場所<rt>ばしょ</rt></ruby>
                     にチェックしてください。
                 </p>
 
@@ -60,7 +60,7 @@
                             >
                             </v-checkbox>
                         </v-row>
-                        <template v-if="p.checked">
+                        <template v-if="p.checked && p.label != '該当しない'">
                             <p>いつ訪れましたか？</p>
                             <v-checkbox
                                 class="ma-0 pa-0"
@@ -78,12 +78,12 @@
 
                 <v-btn
                     class="white--text"
-                    color="#03AF7A"
-                    @click="movePage('/break', true)"
+                    color="#3DB0F3"
+                    @click="movePage('/input5')"
                     block
                 >
                     <h3>
-                        登録して次へすすむ
+                        次へすすむ
                     </h3>
                 </v-btn>
 
@@ -100,6 +100,7 @@ const focusedLocations = [
     // 外部から入力
     // 名称,エリア,クラスター認定日,住所
     // XXX 外部から読み込めるようにする。
+    { label: '該当しない', area: '', date: '', address: '' },
     { label: '北翔第九病院', area: '石狩', date: '2021-08-04', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
     { label: '養護老人ホームはるか豊潤', area: '胆振', date: '2021-08-09', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
     { label: 'しつげんタクシー', area: '釧路', date: '2021-08-14', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
@@ -161,23 +162,10 @@ export default {
                 //this.$store.commit('updateFormData', this.formData)
             }
         },
-        movePage: function(pageName, doSubmit) {
+        movePage: function(pageName) {
             if (this.$refs.baseform.validate()) {
                 this.updateFormData()
-                if (doSubmit) {
-                    utils.async_post(`${process.env.VUE_APP_SERVER_URL}/2`,
-                        JSON.parse(JSON.stringify(this.formData)))
-                        .then(ret => {
-                            if (ret.code == 200) {
-                                this.$router.push(pageName)
-                            } else {
-                                this.$store.state.ponseData = ret
-                                this.$router.push('/error')
-                            }
-                        })
-                } else {
-                    this.$router.push(pageName)
-                }
+                this.$router.push(pageName)
             }
         },
     },

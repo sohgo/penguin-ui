@@ -5,17 +5,17 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/input1')">
+            <v-btn icon @click="movePage('/input5', false)">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力２
+                入力6
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input3')">
+            <v-btn icon @click="movePage('/input7', false)">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -25,13 +25,8 @@
         <v-main>
             <div class="mx-3 my-5">
                 <h1 class="my-3">
-                    あなたの基礎疾患<br>
-                    についてお伺いします。
+                    感染ルートは判明していますか？
                 </h1>
-
-                <p>
-                    該当する疾患についてチェックしてください。
-                </p>
 
                 <v-form
                     class="ma-3"
@@ -40,49 +35,40 @@
                     lazy-validation
                 >
 
-                    <v-container
-                        class="ma-0 pa-1"
-                        v-for="(g, i) in sickList"
-                        :key="i"
-                    >
-                        <div v-if="g.label != 'ワクチン' && g.label != '感染ルート' && g.label != '感染歴'">
-                            <v-row>
-                                <v-checkbox
-                                    :label="g.label"
-                                    v-model="g.checked"
-                                    dense
-                                >
-                                </v-checkbox>
-                            </v-row>
-                            <template v-if="g.question && g.checked">
+                    <div v-for="(g, i) in sickList" :key="i">
+                        <v-container
+                            class="ma-0 pa-1"
+                            v-if="g.question && g.label == '感染ルート'"
+                        >
+                            <template>
                                 <v-row>
-                                    <v-textarea
+                                    <v-checkbox
+                                        class="d-none"
+                                        :label="g.label"
+                                        v-model="g.checked"
+                                        checked="true"
+                                        aria-checked="true"
+                                        dense
+                                    >
+                                    </v-checkbox>
+                                    <v-text-field
                                         :label="g.question"
-                                        rows="2"
                                         v-model="g.text"
-                                        :disabled="!g.checked"
                                         :placeholder="g.checked ? g.placeholder : ''"
                                         dense
                                     >
-                                    </v-textarea>
+                                    </v-text-field>
                                 </v-row>
                             </template>
-                        </div>
-                        <div v-else class="d-none">
-                            <v-checkbox
-                                :label="g.label"
-                                v-model="g.checked"
-                            >
-                            </v-checkbox>
-                        </div>
-                    </v-container>
+                        </v-container>
+                    </div>
 
                 </v-form>
 
                 <v-btn
                     class="pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input3')"
+                    @click="movePage('/input7', false)"
                     block
                 >
                     <span>
@@ -98,10 +84,9 @@
 
 <!--script src="/s/healthProfile.js" async defer></script-->
 <script>
-//import utils from '@/common/utils.js'
+import utils from '@/common/utils.js'
 
 const healthProfile = [
-    // 外部から入力
     {label:'該当しない',question:'',placeholder:'',error:''},
     {label:'妊娠',question:'妊娠何週目ですか？',placeholder:'',error:''},
     {label:'喫煙',question:'何歳から１日あたり何本吸いますか？',placeholder:'例) 20本',error:''},
@@ -118,7 +103,7 @@ const healthProfile = [
     {label:'ワクチン',question:'ワクチンの接種回数を入力してください',placeholder:'未接種の場合は0と入力してください',error:'',text:'', checked:'ture'},
     {label:'感染歴',question:'感染回数を入力してください',placeholder:'1度も無い場合は0と入力してください',error:'',text: '', checked:'ture'}, 
     {label:'感染ルート',question:'感染ルートは判明していますか？',placeholder:'「はい」か「いいえ」、正確に判明している場合具体的に入力してください',error:'',text: '', checked:'ture'}, 
-    ]
+]
 
 export default {
     data() {
@@ -186,9 +171,20 @@ export default {
                 //this.$store.commit('updateFormData', this.formData)
             }
         },
-        movePage: function(pageName) {
-            if (this.$refs.baseform.validate()) {
-                this.updateFormData()
+        movePage: function(pageName, doSubmit) {
+            this.updateFormData()
+            if (doSubmit) {
+                utils.async_post(`${process.env.VUE_APP_SERVER_URL}/2`,
+                    JSON.parse(JSON.stringify(this.formData)))
+                    .then(ret => {
+                        if (ret.code == 200) {
+                            this.$router.push(pageName)
+                        } else {
+                            this.$store.state.responseData = ret
+                            this.$router.push('/error')
+                        }
+                    })
+            } else {
                 this.$router.push(pageName)
             }
         },
@@ -210,33 +206,19 @@ export default {
                 if (ks.length == 1) {
                     let obj = this.formData.healthRecord[ks[0]]
                     // found the label in formData.healthRecord
-                    if (obj.label == 'ワクチン' || obj.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: obj.text !== null ? true : false,
-                            text: obj.text,
-                        }))
-                    }
+                    w.push(Object.assign({}, profile, {
+                        checked: obj.text !== null ? true : false,
+                        text: obj.text,
+                    }))
                 } else if (ks.length > 1) {
                     throw `ERROR: label=${profile.label} ks.length = ${ks.length}`
                 } else {
                     // ks == []: LABELが存在しなかった。
                     // ks == undefined: サーバからhealthRecordを渡された。
-                    if (profile.label == 'ワクチン' || profile.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: false,
-                            text: null,
-                        }))
-                    }
+                    w.push(Object.assign({}, profile, {
+                        checked: false,
+                        text: null,
+                    }))
                 }
             }
         }
