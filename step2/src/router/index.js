@@ -4,6 +4,7 @@ import store from '@/store'
 import Entry from '@/Entry'
 import Auth from '@/Auth'
 import AuthError from '@/AuthError'
+import Step2Input0 from '@/Step2Input0'
 import Step2Input1 from '@/Step2Input1'
 import Step2Input2 from '@/Step2Input2'
 import Step2Input3 from '@/Step2Input3'
@@ -103,6 +104,12 @@ const routes = [
         path: '/input3',
         name: 'input3',
         component: Step2Input8,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/start',
+        name: 'start',
+        component: Step2Input0,
         meta: { authRequired: true },
     },
     {

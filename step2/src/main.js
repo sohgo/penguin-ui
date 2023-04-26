@@ -3,6 +3,10 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
+import jQuery from 'jquery'
+global.jquery = jQuery
+global.$ = jQuery
+window.$ = window.jQuery = require('jquery')
 
 Vue.config.productionTip = false
 

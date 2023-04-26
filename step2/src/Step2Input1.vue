@@ -5,7 +5,11 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon disabled></v-btn>
+            <v-btn icon @click="movePage('/start', false)">
+                <v-icon class="white--text"
+                    link
+                >mdi-arrow-left</v-icon>
+            </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
                 入力１
@@ -119,6 +123,7 @@
                             >
                     </v-select>
                     <!-- 生活圏 -->
+                    <!--
                     <v-text-field
                         label="主な生活エリア"
                         v-model="formData.livingArea"
@@ -142,13 +147,16 @@
                             required
                         ></v-select>
                     </div>
+                    -->
                     <!-- 職業 -->
+                    <!--
                     <v-select
                             label="職業"
                             v-model="formData.profession"
                             :items="occupationList"
                             >
                     </v-select>
+                    -->
                     <!-- 生活 -->
                     <v-select
                             label="共同生活、職場での就寝の有無など"
@@ -157,7 +165,7 @@
                             >
                     </v-select>
 
-                    <!-- 本人以外の連絡先 -->
+                    <!-- 本人以外の連絡先
                     <h2>本人以外（保護者など）の連絡先</h2>
                     <v-text-field label="氏名"
                             v-model.lazy="formData.attendantName"
@@ -179,6 +187,7 @@
                             ref="attendantPhone"
                             >
                     </v-text-field>
+                    -->
 
                     <h2>勤務先・学校・習い事など</h2>
                     <p>勤務先（パート・アルバイト含む）名、学校名、習い事、サークル名などを入力してください。複数ある方は「他の活動を追加」を押して複数ご入力ください。</p>

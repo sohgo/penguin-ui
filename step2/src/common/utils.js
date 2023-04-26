@@ -158,9 +158,10 @@ const generatePastDateList = (date_string) => {
         }
     */
     let start_date = new Date(date_string)
+    start_date.setDate(start_date.getDate() + 3);
     let ts = start_date.getTime()
     let dateList = []
-    for (let j = 0; j < 14; j++) {
+    for (let j = -3; j < 7; j++) {
         let dto = new Date(ts)
         let yyyy = '' + dto.getFullYear()
         let mm = '' + (1 + dto.getMonth())
@@ -172,7 +173,14 @@ const generatePastDateList = (date_string) => {
             dd = '0' + dd
         }
         let dw = ['日','月','火','水','木','金','土'][dto.getDay()]
-        let annotate = j == 0 ? '発症日' : `${j}日前`
+        var annotate = ''
+        if (j == 0) {
+            annotate = '発症日'
+        } else if (j > 0) {
+            annotate = j + '日前'
+        } else if (j < 0) {
+            annotate = Math.abs(j) + '日後'
+        }
         dateList.push({
             label: [yyyy,mm,dd].join('-'),
             local: `${mm}月${dd}日`,
@@ -181,6 +189,7 @@ const generatePastDateList = (date_string) => {
             })
             ts -= 86400000
     }
+    console.log(dateList)
     return dateList
 }
 

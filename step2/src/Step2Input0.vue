@@ -5,17 +5,13 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/input2')">
-                <v-icon class="white--text"
-                    link
-                >mdi-arrow-left</v-icon>
-            </v-btn>
+            <v-btn icon disabled></v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力3
+                届出システム
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input4')">
+            <v-btn icon @click="movePage('/input1', false)">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -25,13 +21,8 @@
         <v-main>
             <div class="mx-3 my-5">
                 <h1 class="my-3">
-                    あなたの既往歴<br>
-                    についてお伺いします。
+                    届出システム
                 </h1>
-
-                <p>
-                    該当する疾患についてチェックしてください。
-                </p>
 
                 <v-form
                     class="ma-3"
@@ -40,29 +31,10 @@
                     lazy-validation
                 >
 
-                    <v-container
-                        class="ma-0 pa-1"
-                        v-for="(a, j) in medicalList"
-                        :key="j"
-                    >
-                        <template>
-                            <v-row>
-                                <v-checkbox
-                                    ref="checks"
-                                    :label="a.label"
-                                    v-model="a.checked"
-                                    @change="changeMedical(a)"
-                                    dense
-                                >
-                                </v-checkbox>
-                            </v-row>
-                        </template>
-                    </v-container>
-
                     <div v-for="(g, i) in sickList" :key="i">
-                        <v-div
+                        <v-container
                             class="ma-0 pa-1"
-                            v-if="g.question && g.label == '既往歴'"
+                            v-if="g.question && g.label == '種別' || g.label == '氏名' || g.label == '所属' || g.label == '学籍番号/職員番号' || g.label == '電話番号'"
                         >
                             <template class="my-3">
                                 <v-row style="margin:0;">
@@ -75,8 +47,26 @@
                                         dense
                                     >
                                     </v-checkbox>
-                                    <v-text-field
-                                        class="d-none"
+                                    <div v-if="g.label == '種別'">
+                                        <v-radio-group v-model="g.text">
+                                            <v-radio
+                                                label="陽性報告"
+                                                id="option1"
+                                                value="1"
+                                            ></v-radio>
+                                            <v-radio
+                                                label="濃厚接触報告"
+                                                id="option2"
+                                                value="2"
+                                            ></v-radio>
+                                            <v-radio
+                                                label="有症状報告（匿名可）"
+                                                id="option3"
+                                                value="3"
+                                            ></v-radio>
+                                        </v-radio-group>
+                                    </div>
+                                    <v-text-field v-else
                                         :label="g.question"
                                         v-model="g.text"
                                         :placeholder="g.checked ? g.placeholder : ''"
@@ -85,14 +75,47 @@
                                     </v-text-field>
                                 </v-row>
                             </template>
-                        </v-div>
+                        </v-container>
                     </div>
+
                 </v-form>
 
+                <v-dialog
+                    class="pa-5 white--text mb-10"
+                    max-width="80%"
+                    max-height="70%"
+                    >
+                    <template 
+                        v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            color="#28a745"
+                            v-bind="attrs"
+                            v-on="on"
+                            class="pa-5 white--text"
+                        >
+                            陽性証明添付
+                        </v-btn>
+                    </template>
+
+                    <v-card>
+                        <v-container class="responsive-style">
+                            <iframe
+                                :src="ffhsUrl"
+                                class="cert-iframe"
+                                height="100%"
+                                width="100%"
+                                frameborder="0"
+                                allowfullscreen
+                            ></iframe>
+                        </v-container>
+                    </v-card>
+
+                </v-dialog>
+
                 <v-btn
-                    class="pa-5 white--text"
+                    class="mt-10 pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input4')"
+                    @click="movePage('/input1', true)"
                     block
                 >
                     <span>
@@ -110,33 +133,6 @@
 <script>
 import utils from '@/common/utils.js'
 import healthProfile from "@/common/healthProfile.js" 
-
-const medicalHistories = [
-    // 外部から入力
-    {label:'該当しない',question:'',placeholder:'',error:'', checked:false},
-    {label:'新型コロナウィルス（COVID-19）',question:'',placeholder:'',error:'', checked:false},
-    {label:'脳卒中',question:'',placeholder:'',error:'', checked:false},
-    {label:'狭心症',question:'',placeholder:'',error:'', checked:false},
-    {label:'心筋梗塞',question:'',placeholder:'',error:'', checked:false},
-    {label:'心不全',question:'',placeholder:'',error:'', checked:false},
-    {label:'虚血性心疾患',question:'',placeholder:'',error:'', checked:false},
-    {label:'その他の心疾患',question:'',placeholder:'',error:'', checked:false},
-    {label:'慢性的な腎不全',question:'',placeholder:'',error:'', checked:false},
-    {label:'人工透析',question:'',placeholder:'',error:'', checked:false},
-    {label:'貧血',question:'',placeholder:'',error:'', checked:false},
-    {label:'高血圧',question:'',placeholder:'',error:'', checked:false},
-    {label:'低血圧',question:'',placeholder:'',error:'', checked:false},
-    {label:'不整脈',question:'',placeholder:'',error:'', checked:false},
-    {label:'高脂質血症',question:'',placeholder:'',error:'', checked:false},
-    {label:'高尿酸血症',question:'',placeholder:'',error:'', checked:false},
-    {label:'腎不全以外の腎疾患',question:'',placeholder:'',error:'', checked:false},
-    {label:'糖尿病',question:'',placeholder:'',error:'', checked:false},
-    {label:'肝臓病',question:'',placeholder:'',error:'', checked:false},
-    {label:'胃・十二指腸潰瘍',question:'',placeholder:'',error:'', checked:false},
-    {label:'うつ',question:'',placeholder:'',error:'', checked:false},
-    {label:'骨粗鬆症',question:'',placeholder:'',error:'', checked:false},
-    {label:'その他の顕著な既往歴あり',question:'',placeholder:'',error:'', checked:false},
-]
 
 export default {
     data() {
@@ -183,7 +179,7 @@ export default {
                         }, ...
                     ]
                 */
-            medicalList: medicalHistories,
+            ffhsUrl: ''
         }
     },
     methods: {
@@ -222,20 +218,6 @@ export default {
                 this.$router.push(pageName)
             }
         },
-        changeMedical: function(item) {
-            var str = '';
-            for (let i = 0; i < this.medicalList.length; i++) {
-                if (this.medicalList[i].checked) {
-                    str += this.medicalList[i].label + ",";
-                }
-            }
-
-            for (let j = 0; j < this.sickList.length; j++) {
-                if (this.sickList[j].label == '既往歴') {
-                    this.sickList[j].text = str;
-                }
-            }
-        },
     },
     mounted: function() {
         this.formData = this.$store.state.formData
@@ -254,26 +236,56 @@ export default {
                 if (ks.length == 1) {
                     let obj = this.formData.healthRecord[ks[0]]
                     // found the label in formData.healthRecord
-                    w.push(Object.assign({}, profile, {
-                        checked: obj.text !== null ? true : false,
-                        text: obj.text,
-                    }))
+                    if (obj.label == '既往歴' || obj.label == '接種回数' || obj.label == '感染ルート' || obj.label == 'ワクチンの種類' || obj.label == '種別' || obj.label == '氏名' || obj.label == '所属' || obj.label == '学籍番号/職員番号' || obj.label == '電話番号') {
+                        w.push(Object.assign({}, profile, {
+                            checked: true,
+                            text: '',
+                        }))
+                    } else {
+                        w.push(Object.assign({}, profile, {
+                            checked: obj.text !== null ? true : false,
+                            text: obj.text,
+                        }))
+                    }
                 } else if (ks.length > 1) {
                     throw `ERROR: label=${profile.label} ks.length = ${ks.length}`
                 } else {
                     // ks == []: LABELが存在しなかった。
                     // ks == undefined: サーバからhealthRecordを渡された。
-                    w.push(Object.assign({}, profile, {
-                        checked: false,
-                        text: null,
-                    }))
+                    if (profile.label == '既往歴' || profile.label == '接種回数' || profile.label == '感染ルート' || profile.label == 'ワクチンの種類' ||  profile.label == '種別' || profile.label == '氏名' || profile.label == '所属' || profile.label == '学籍番号/職員番号' || profile.label == '電話番号') {
+                        w.push(Object.assign({}, profile, {
+                            checked: true,
+                            text: '',
+                        }))
+                    } else {
+                        w.push(Object.assign({}, profile, {
+                            checked: false,
+                            text: null,
+                        }))
+                    }
                 }
             }
         }
         this.sickList = this.workData.sickList
+        let ffhs_url = `${process.env.VUE_APP_FFHS_URL}` + 'api/epidemiologic_research/cert_uploads?email=' + this.formData.emailAddr
+        console.log(ffhs_url)
+        this.ffhsUrl = ffhs_url;
     }
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.responsive-style{
+    position:relative;
+    width:100%;
+    height:0;
+    padding-top:50%;
+}
+.responsive-style iframe{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
 </style>

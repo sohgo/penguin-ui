@@ -110,11 +110,6 @@
                                         v-model="dav.what.text"
                                         >
                                     </v-text-field>
-                                    <v-text-field
-                                        label="マスクを着用していましたか？"
-                                        v-model="dav.what.text"
-                                        >
-                                    </v-text-field>
                                 </div>
                             </v-container>
 
@@ -123,12 +118,10 @@
                                 <v-card-subtitle class="daily-input-section pa-1 white--text">「いつ」</v-card-subtitle>
                                 <div>
                                     いつ頃ですか？
-                                    <v-chip color="error" small>必須</v-chip>
                                 </div>
                                 <v-radio-group
                                     v-model="dav.when.label"
                                     @change="changeWhenLabel(dav)"
-                                    required
                                 >
                                     <v-radio class="px-4 ma-0"
                                             v-for="(d, i) in whenList"
@@ -138,65 +131,64 @@
                                             >
                                     </v-radio>
                                 </v-radio-group>
-                                <div>正確な時刻が分かれば入力して下さい。</div>
-                                <v-menu
-                                    :ref="`timeFromPicker${dav.idx}`"
-                                    v-model="dav.when.timeFromMenu"
-                                    :close-on-content-click="false"
-                                    :nudge-right="40"
-                                    :return-value.sync="dav.when.timeFrom"
-                                    transition="scale-transition"
-                                    offset-y
-                                    max-width="290px"
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field
+                                <div class="clock-area" v-show="showClock">
+                                    <v-menu
+                                        :ref="`timeFromPicker${dav.idx}`"
+                                        v-model="dav.when.timeFromMenu"
+                                        :close-on-content-click="false"
+                                        :nudge-right="40"
+                                        :return-value.sync="dav.when.timeFrom"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="290px"
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field
+                                                v-model="dav.when.timeFrom"
+                                                label="いつから"
+                                                prepend-icon="mdi-clock-time-four-outline"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-time-picker
+                                            v-if="dav.when.timeFromMenu"
+                                            :allowed-minutes="m => m%5==0"
                                             v-model="dav.when.timeFrom"
-                                            label="いつから"
-                                            prepend-icon="mdi-clock-time-four-outline"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-time-picker
-                                        v-if="dav.when.timeFromMenu"
-                                        :allowed-minutes="m => m%5==0"
-                                        v-model="dav.when.timeFrom"
-                                        full-width
-                                        @click:minute="$refs[`timeFromPicker${dav.idx}`][0].save(dav.when.timeFrom)"
-                                    ></v-time-picker>
-                                </v-menu>
-                                <v-menu
-                                    :ref="`timeToPicker${dav.idx}`"
-                                    v-model="dav.when.timeToMenu"
-                                    :close-on-content-click="false"
-                                    :nudge-right="40"
-                                    :return-value.sync="dav.when.timeTo"
-                                    transition="scale-transition"
-                                    offset-y
-                                    max-width="290px"
-                                    min-width="290px"
-                                >
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-text-field
+                                            full-width
+                                            @click:minute="$refs[`timeFromPicker${dav.idx}`][0].save(dav.when.timeFrom)"
+                                        ></v-time-picker>
+                                    </v-menu>
+                                    <v-menu
+                                        :ref="`timeToPicker${dav.idx}`"
+                                        v-model="dav.when.timeToMenu"
+                                        :close-on-content-click="false"
+                                        :nudge-right="40"
+                                        :return-value.sync="dav.when.timeTo"
+                                        transition="scale-transition"
+                                        offset-y
+                                        max-width="290px"
+                                        min-width="290px"
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-text-field
+                                                v-model="dav.when.timeTo"
+                                                label="いつまで"
+                                                prepend-icon="mdi-clock-time-four-outline"
+                                                v-bind="attrs"
+                                                v-on="on"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-time-picker
+                                            v-if="dav.when.timeToMenu"
+                                            :allowed-minutes="m => m%5==0"
                                             v-model="dav.when.timeTo"
-                                            label="いつまで"
-                                            prepend-icon="mdi-clock-time-four-outline"
-                                            readonly
-                                            v-bind="attrs"
-                                            v-on="on"
-                                        ></v-text-field>
-                                    </template>
-                                    <v-time-picker
-                                        v-if="dav.when.timeToMenu"
-                                        :allowed-minutes="m => m%5==0"
-                                        v-model="dav.when.timeTo"
-                                        full-width
-                                        @click:minute="$refs[`timeToPicker${dav.idx}`][0].save(dav.when.timeTo)"
-                                    ></v-time-picker>
-                                </v-menu>
+                                            full-width
+                                            @click:minute="$refs[`timeToPicker${dav.idx}`][0].save(dav.when.timeTo)"
+                                        ></v-time-picker>
+                                    </v-menu>
+                                </div>
                             </v-container>
 
                             <!-- どこで -->
@@ -205,7 +197,7 @@
                                 <v-text-field
                                     v-model="dav.where.text"
                                     label="施設名・場所名を詳細に教えてください。"
-                                    placeholder="例) 北見工科大学〇〇教室、〇〇ゼミ室、〇〇マンション〇〇号室"
+                                    placeholder="例) 北見工業大学〇〇教室、〇〇ゼミ室、〇〇マンション〇〇号室"
                                 >
                                 </v-text-field>
                                 <v-text-field
@@ -371,8 +363,8 @@ const gmapInitZoomValue = 14
 
 const googleMapOptions = {
     center: {
-        lat: 43.0643091,
-        lng: 141.3468324,
+        lat: 43.82310817772804,
+        lng: 143.9054510153408,
     },
     zoom: gmapInitZoomValue,
     //maxZoom: 15,
@@ -387,25 +379,26 @@ const googleMapOptions = {
 
 const whatList = [
     // 外部から取得する。変更禁止。
-    {label: '食事', tags: ['自宅で食べた', '外食']},
-    {label: '移動・通勤・通学', tags: ['徒歩', '電車', 'バス', '自家用車', '自転車']},
-    {label: '仕事・学業', tags: ['学校に通った', '自宅でリモート', '会社に通勤した', '屋外作業があった', 'アルバイト', '内職', '自家営業手伝い']},
-    {label: '家事', tags: ['料理', '掃除・洗濯']},
-    {label: '介護・看護・育児', tags: ['家族の介護・看護・育児', '介護サービスによる入浴']},
-    {label: '買い物', tags: ['食料品・日用品', '電化製品・レジャー製品', 'ビデオなどのレンタル', 'ネットショッピング']},
-    {label: '身の回りの用事', tags: ['入浴', '身じたく・着替え', '理美容室でのカット・パーマ', 'マッサージ・エステ']},
-    {label: '趣味・娯楽', tags: ['映画', '博物館・美術館', '水族館・遊園地', 'スポーツ鑑賞', '楽器演奏', '手芸・華道', 'ガーデニング', 'ペット等の飼育', 'ドライブ', '読書・ゲーム', 'お菓子作り']},
-    {label: 'スポーツ', tags: ['ジョギング・ランニング', '水泳', '球技', 'クラブ・サークル活動']},
-    {label: '社会的活動', tags: ['施設や公園などの清掃', '植栽ボランティア', '交通安全見守り', '美術館ガイド', '労働組合運動', '布教活動', '献血', '民生委員', '施設の慰問']},
-    {label: '交際・付き合い', tags: ['訪問・来客の接待や会話', '冠婚葬祭', '歓迎会・送別会・同窓会などの会合']},
-    {label: '受診・療養', tags: ['病院での受診・治療', '健康診断']},
-    {label: '旅行・行楽', tags: ['求職活動', 'お墓参り']},
+    {label: '食事', tags: ['自宅で食べた', '外食', 'マスクを着用していた']},
+    {label: '移動・通勤・通学', tags: ['徒歩', '電車', 'バス', '自家用車', '自転車', 'マスクを着用していた']},
+    {label: '仕事・学業', tags: ['学校に通った', '自宅でリモート', '会社に通勤した', '屋外作業があった', 'アルバイト', '内職', '自家営業手伝い', 'マスクを着用していた']},
+    {label: '家事', tags: ['料理', '掃除・洗濯', 'マスクを着用していた']},
+    {label: '介護・看護・育児', tags: ['家族の介護・看護・育児', '介護サービスによる入浴', 'マスクを着用していた']},
+    {label: '買い物', tags: ['食料品・日用品', '電化製品・レジャー製品', 'ビデオなどのレンタル', 'ネットショッピング', 'マスクを着用していた']},
+    {label: '身の回りの用事', tags: ['入浴', '身じたく・着替え', '理美容室でのカット・パーマ', 'マッサージ・エステ', 'マスクを着用していた']},
+    {label: '趣味・娯楽', tags: ['映画', '博物館・美術館', '水族館・遊園地', 'スポーツ鑑賞', '楽器演奏', '手芸・華道', 'ガーデニング', 'ペット等の飼育', 'ドライブ', '読書・ゲーム', 'お菓子作り', 'マスクを着用していた']},
+    {label: 'スポーツ', tags: ['ジョギング・ランニング', '水泳', '球技', 'クラブ・サークル活動', 'マスクを着用していた']},
+    {label: '社会的活動', tags: ['施設や公園などの清掃', '植栽ボランティア', '交通安全見守り', '美術館ガイド', '労働組合運動', '布教活動', '献血', '民生委員', '施設の慰問', 'マスクを着用していた']},
+    {label: '交際・付き合い', tags: ['訪問・来客の接待や会話', '冠婚葬祭', '歓迎会・送別会・同窓会などの会合', 'マスクを着用していた']},
+    {label: '受診・療養', tags: ['病院での受診・治療', '健康診断', 'マスクを着用していた']},
+    {label: '旅行・行楽', tags: ['求職活動', 'お墓参り', 'マスクを着用していた']},
     {label: 'その他', tags: []},
     ]
 
 const whenList = [
     // 気象庁, https://www.jma.go.jp/jma/kishou/know/yougo_hp/toki.html
     // 終日を除く
+    {label: '時刻を入力する', timeFrom: '00:00', timeTo: '00:00' },
     {label: '終日', timeFrom: '00:00', timeTo: '24:00' },
     {label: '未明', timeFrom: '00:00', timeTo: '03:00' },
     {label: '明け方', timeFrom: '03:00', timeTo: '06:00' },
@@ -494,6 +487,7 @@ export default {
         lng: null,
         timerCheckGmapElm: null,
         latlngSearched: null,
+        showClock: false,
     }),
     computed: {
         dailyActDetails: function() {
@@ -641,9 +635,16 @@ export default {
             obj.tags = obj.tags.concat(obj.selected.splice(idx,1)).sort()
         },
         changeWhenLabel: function(dav) {
-            let w = whenList.filter(v=> v.label == dav.when.label)[0]
-            dav.when.timeFrom = w.timeFrom
-            dav.when.timeTo = w.timeTo
+            let w = whenList.filter(v=> v.label == dav.when.label)[0];
+            if (w.label == '時刻を入力する') {
+                dav.when.timeFrom = w.timeFrom
+                dav.when.timeTo = w.timeTo
+                this.showClock = true
+            } else {
+                dav.when.timeFrom = ''
+                dav.when.timeTo = ''
+                this.showClock = false
+            }
         },
         /* google map */
         removePrefixJapan: function(str) {

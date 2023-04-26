@@ -19,8 +19,8 @@
         <v-main class="grey lighten-5">
             <div class="ma-3">
                 <h3 class="my-3">
-                    お送りした認証コード<br>
-                    （3組の4桁の数字）を<br>
+                    メールアドレスと<br>
+                    お送りした認証コードを<br>
                     入力して下さい。
                 </h3>
 
@@ -130,7 +130,7 @@ export default {
                     .then(ret => {
                         this.$store.state.authed = true
                             this.$store.state.formData = ret.data
-                            this.$router.push('/input1')
+                            this.$router.push('/start')
                     })
             }
         },
@@ -153,15 +153,26 @@ export default {
     mounted: function() {
         this.formData = this.$store.state.formData
         // set the given email address if needed.
+        utils.generatePastDateList('2023-04-01')
         let em = document.querySelector('meta[name="X-HKD-GIVEN-EM"]').getAttribute('content')
         if (em != "__HKD_GIVEN_EM__") {
             this.formData.emailAddr = em
-            this.givenEmailAddr = true
+            //this.givenEmailAddr = true
         }
+        let _url = new URL(window.location.href)
+        let params = _url.searchParams
+        let value = params.get('code')
+        if (/^\d{4}-\d{4}-\d{4}$/.test(value)) {
+            let vs = value.split('-')
+            this.ac1 = vs[0]
+            this.ac2 = vs[1]
+            this.ac3 = vs[2]
+        }
+
         // get xpath from the URL.
         let url = document.URL
         this.formData.xpath = url.substr(url.indexOf('/2/x/')+5, 64)
-        console.log("formData", this.formData)
+        //console.log("formData", this.formData)
     }
 }
 </script>

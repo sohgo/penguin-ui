@@ -160,7 +160,7 @@ const generatePastDateList = (date_string) => {
     let start_date = new Date(date_string)
     let ts = start_date.getTime()
     let dateList = []
-    for (let j = 0; j < 14; j++) {
+    for (let j = 0; j < 7; j++) {
         let dto = new Date(ts)
         let yyyy = '' + dto.getFullYear()
         let mm = '' + (1 + dto.getMonth())

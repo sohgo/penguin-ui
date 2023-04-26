@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar color="#03AF7A" class="basefont white--text text-center"
+        <v-app-bar color="#3DB0F3" class="basefont white--text text-center"
                    elevation="0"
                    dense
                    app>
@@ -11,7 +11,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title>
-                登録の開始
+                メールアドレスの登録
             </v-app-bar-title>
             <v-spacer></v-spacer>
         </v-app-bar>
@@ -37,8 +37,9 @@
                                     ></v-text-field>
                 </v-form>
 
+                <div class="my-3">登録後、ログイン用のURLがシステムより送信されます。</div>
                 <v-btn class="pa-5"
-                       color="#03AF7A"
+                       color="#3DB0F3"
                        @click="submitData"
                        block
                        >

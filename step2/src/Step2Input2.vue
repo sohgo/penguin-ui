@@ -45,7 +45,7 @@
                         v-for="(g, i) in sickList"
                         :key="i"
                     >
-                        <div v-if="g.label != 'ワクチン' && g.label != '感染ルート' && g.label != '感染歴'">
+                        <div v-if="g.label != '既往歴' && g.label != '接種回数' && g.label != 'ワクチンの種類' && g.label != '感染歴' && g.label != '感染ルート' && g.label != '種別' && g.label != '氏名' && g.label != '所属' && g.label != '学籍番号/職員番号' && g.label != '電話番号'">
                             <v-row>
                                 <v-checkbox
                                     :label="g.label"
@@ -68,7 +68,7 @@
                                 </v-row>
                             </template>
                         </div>
-                        <div v-else class="d-none">
+                        <div v-else class="d-none" style="margin:0;padding:0;">
                             <v-checkbox
                                 :label="g.label"
                                 v-model="g.checked"
@@ -96,29 +96,10 @@
     </v-app>
 </template>
 
-<!--script src="/s/healthProfile.js" async defer></script-->
+<script type="module" src="/common/healthProfile.js" async defer></script>
 <script>
 //import utils from '@/common/utils.js'
-
-const healthProfile = [
-    // 外部から入力
-    {label:'該当しない',question:'',placeholder:'',error:''},
-    {label:'妊娠',question:'妊娠何週目ですか？',placeholder:'',error:''},
-    {label:'喫煙',question:'何歳から１日あたり何本吸いますか？',placeholder:'例) 20本',error:''},
-    {label:'糖尿病',question:'具体的に教えてください',placeholder:'例)2型糖尿病でインスリン注射をしている。',error:''},
-    {label:'呼吸器疾患（喘息・COPD・その他）',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'腎疾患',question:'透析はしていますか？',placeholder:'',error:''},
-    {label:'肝疾患',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'心疾患',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'神経筋疾患',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'血液疾患（貧血等）',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'免疫不全（HIV、免疫抑制剤使用含む）',question:'HIV、免疫抑制剤使用含む。具体的に教えてください。',placeholder:'',error:''},
-    {label:'悪性腫瘍（がん）',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'その他',question:'具体的に教えてください',placeholder:'',error:''},
-    {label:'ワクチン',question:'ワクチンの接種回数を入力してください',placeholder:'未接種の場合は0と入力してください',error:'',text:'', checked:'ture'},
-    {label:'感染歴',question:'感染回数を入力してください',placeholder:'1度も無い場合は0と入力してください',error:'',text: '', checked:'ture'}, 
-    {label:'感染ルート',question:'感染ルートは判明していますか？',placeholder:'「はい」か「いいえ」、正確に判明している場合具体的に入力してください',error:'',text: '', checked:'ture'}, 
-    ]
+import healthProfile from "@/common/healthProfile.js" 
 
 export default {
     data() {
@@ -210,33 +191,19 @@ export default {
                 if (ks.length == 1) {
                     let obj = this.formData.healthRecord[ks[0]]
                     // found the label in formData.healthRecord
-                    if (obj.label == 'ワクチン' || obj.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: obj.text !== null ? true : false,
-                            text: obj.text,
-                        }))
-                    }
+                    w.push(Object.assign({}, profile, {
+                        checked: obj.text !== null ? true : false,
+                        text: obj.text,
+                    }))
                 } else if (ks.length > 1) {
                     throw `ERROR: label=${profile.label} ks.length = ${ks.length}`
                 } else {
                     // ks == []: LABELが存在しなかった。
                     // ks == undefined: サーバからhealthRecordを渡された。
-                    if (profile.label == 'ワクチン' || profile.label == '感染ルート' || profile.label == '感染歴') {
-                        w.push(Object.assign({}, profile, {
-                            checked: true,
-                            text: '',
-                        }))
-                    } else {
-                        w.push(Object.assign({}, profile, {
-                            checked: false,
-                            text: null,
-                        }))
-                    }
+                    w.push(Object.assign({}, profile, {
+                        checked: false,
+                        text: null,
+                    }))
                 }
             }
         }
