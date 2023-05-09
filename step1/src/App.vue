@@ -13,13 +13,13 @@ body {
     font-family:Shin Maru Go Medium,Simplon Norm,Roboto,Segoe UI,Helvetica Neue,HelveticaNeue,Arial,Noto Sans JP,Hiragino Kaku Gothic ProN,Hiragino Sans,Meiryo,sans-serif;*/
     /* adobe creative cloud font setting */
     font-family:a-otf-ud-shin-maru-go-pr6n,	Simplon Norm,Roboto,Segoe UI,Helvetica Neue,HelveticaNeue,Arial,Noto Sans JP,Hiragino Kaku Gothic ProN,Hiragino Sans,Meiryo,sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     font-style: normal;
     /* end adobe creative cloud font setting */
     font-feature-settings: "palt";
     -webkit-font-smoothing: antialiased;
-    font-size: 0.914rem;
-}.
+    font-size: 0.9rem;
+}
 h1 {
     font-size:1.4rem;
     line-height: 1.8rem;
@@ -66,8 +66,18 @@ p {
     font-size:1rem;
     font-weight: bold;
 }
+.image-wrapper {
+  max-width: 75%;
+}
+.header__logo{
+    width: 100%;
+    height: auto;
+}
 .entry-body {
     background-color: #3DB0F3;
+}
+.biginning-body{
+    background-color: #FFFFFF;
 }
 .workplace-header {
     padding:6px 0px 6px 8px;

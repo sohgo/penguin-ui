@@ -12,7 +12,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力7
+                あなたの健康について(5/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="movePage('/break', true)">

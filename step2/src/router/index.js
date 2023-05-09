@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import Entry from '@/Entry'
+import Entry from '@/Auth'
 import Auth from '@/Auth'
 import AuthError from '@/AuthError'
 import Step2Input0 from '@/Step2Input0'
@@ -43,18 +43,42 @@ const routes = [
     {
         path: '/input1',
         name: 'input1',
-        component: Step2Input1,
+        component: Step2Input0,
         meta: { authRequired: true },
     },
     {
         path: '/input2',
         name: 'input2',
+        component: Step2Input1,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input3',
+        name: 'input3',
         component: Step2Input2,
         meta: { authRequired: true },
     },
     {
         path: '/input4',
         name: 'input4',
+        component: Step2Input8,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input5',
+        name: 'input5',
+        component: Step2Input5,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input6',
+        name: 'input6',
+        component: Step2Input7,
+        meta: { authRequired: true },
+    },
+    {
+        path: '/input7',
+        name: 'input7',
         component: Step2Input3,
         meta: { authRequired: true },
     },
@@ -83,33 +107,9 @@ const routes = [
         meta: { authRequired: true },
     },
     {
-        path: '/input5',
-        name: 'input5',
-        component: Step2Input5,
-        meta: { authRequired: true },
-    },
-    {
-        path: '/input7',
-        name: 'input7',
+        path: '/input0',
+        name: 'input0',
         component: Step2Input6,
-        meta: { authRequired: true },
-    },
-    {
-        path: '/input6',
-        name: 'input6',
-        component: Step2Input7,
-        meta: { authRequired: true },
-    },
-    {
-        path: '/input3',
-        name: 'input3',
-        component: Step2Input8,
-        meta: { authRequired: true },
-    },
-    {
-        path: '/start',
-        name: 'start',
-        component: Step2Input0,
         meta: { authRequired: true },
     },
     {

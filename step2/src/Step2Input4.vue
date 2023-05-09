@@ -12,7 +12,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                行動履歴
+                行動履歴(8/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
             <v-btn icon disabled></v-btn>

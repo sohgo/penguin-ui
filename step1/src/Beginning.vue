@@ -1,63 +1,59 @@
 <template>
     <v-app>
 
-        <v-main class="entry-body white--text">
+        <v-main class="biginning-body black--text">
 
             <div class="mx-3 my-5">
 
-                <h1 class="entry my-3">
-                    積極的疫学調査<br>
-                    にご協力ください。
+                <h1 class="entry image-wrapper pb-0 mb-5">
+                    <img src="@/assets/img/ui_logo.png" alt="Logo" class="header__logo">
                 </h1>
 
-                <div class="py-3">
-                    <div class="my-3">
-                        このたびは新型コロナウイルス感染症に罹患され、
-                        大変ご不安だと思います。
+                <div class="px-3">
+                    <div class="mb-3">
+                        このシステムは、新型コロナウイルス感染症に「感染した」、「感染者(陽性者)と接触した」、「体調がわるい」 といった情報を、保健管理センターへと届け出るためのシステムです。
+                    </div>
+
+                    <div class="my-5">
+                        報告は、以下の3ステップで進めて頂きます。
                     </div>
 
                     <div class="my-3">
-                        このアプリではあなたがこれまでにどのような方と
-                        接触してきたのか、また、毎日の体調について
-                        共有して頂くためのインタフェースを提供しています。
+                        1. 連絡の付くメールアドレスを登録する<br />
+                        2. 届いたメールに記されたリンクをクリックする<br />
+                        3. 症状や活動状況を入力し、センターに提出する<br />
+                        4. 必要に応じて、2のリンクから登録情報を修正する
                     </div>
 
                     <div class="my-3">
-                        アプリを使い始める前に、
-                        <div class="ma-2">
-                        1. あなたの住所などの情報<br>
-                        2. 基礎疾患に関する情報<br>
-                        </div>
-                        について登録をお願いします。
+                        入力して頂いた情報は、本学における感染対策に役立てる他、統計処理したうえで研究発表に用いさせて頂きます。
                     </div>
 
                     <div class="my-3">
-                        その後、過去14日間の行動履歴について、
-                        このアプリに登録をして頂きます。
-                    </div>
-
-                    <div class="my-3">
-                        少し時間のかかる作業ではありますが、
-                        新型コロナウイルス感染症の拡大を防止
-                        するために必要ですので、休憩を取りながら、
-                        できるだけ正確な情報の登録を
-                        お願いします。
-                    </div>
-
-                    <div class="my-3">
-                        よろしくお願いいたします。
+                        ご賛同いただける方は、<br />以下よりメールアドレスを入力して下さい。
                     </div>
                 </div>
 
                 <v-btn class="pa-5"
-                    color="white"
+                    color="#3DB0F3"
                     block
                     to="/Step1Input">
-                    <span class="black--text">
-                        はじめる
+                    <span class="white--text">
+                        メールアドレスを入力する
                     </span>
                 </v-btn>
 
+                <div class="px-3 text-right">
+                    <div class="my-5">
+                        <a href="#">本システムを用いた報告を望まない方は、こちら</a>
+                    </div>
+                    <div class="my-3">
+                        問い合わせ先:<br />
+                        北見工業大学 保健管理センター<br />
+                        電話: xxxx-xxx-xxx<br />
+                        メール: xxxxxxxx
+                    </div>
+                </div>
             </div>
         </v-main>
     </v-app>

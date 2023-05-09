@@ -20,9 +20,9 @@ const healthProfile = [
     {label:'感染歴',question:'感染回数を入力してください',placeholder:'1度も無い場合は0と入力してください',error:'',text: '', checked:'ture'}, 
     {label:'感染ルート',question:'感染者との接触はありましたか？',placeholder:'',error:'',text: '', checked:'ture'},
     {label:'種別',question:'届出種別を選択してください',placeholder:'',error:''},
-    {label:'氏名',question:'氏名を入力してください',placeholder:'',error:''},
-    {label:'所属',question:'所属を入力してください',placeholder:'',error:''}, 
-    {label:'学籍番号/職員番号',question:'学籍番号または職員番号を入力してください',placeholder:'',error:''},
-    {label:'電話番号',question:'電話番号を入力してください',placeholder:'',error:''},
+    {label:'氏名',question:'氏名',placeholder:'',error:''},
+    {label:'所属',question:'所属',placeholder:'',error:''}, 
+    {label:'学籍番号/職員番号',question:'学籍番号または職員番号',placeholder:'',error:''},
+    {label:'電話番号',question:'電話番号',placeholder:'電話番号',error:''},
 ]
 export default healthProfile;

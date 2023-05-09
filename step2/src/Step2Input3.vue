@@ -6,18 +6,18 @@
             dense
             app
         >
-            <v-btn icon @click="movePage('/input3')">
+            <v-btn icon @click="movePage('/input6')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力4
+                あなたの健康について(7/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
             <!-- ここは将来的にはdisableにする。 -->
-            <v-btn icon @click="movePage('/input5')">
+            <v-btn icon @click="movePage('/break')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -79,7 +79,7 @@
                 <v-btn
                     class="white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input5')"
+                    @click="movePage('/break', true)"
                     block
                 >
                     <h3>
@@ -101,13 +101,10 @@ const focusedLocations = [
     // 名称,エリア,クラスター認定日,住所
     // XXX 外部から読み込めるようにする。
     { label: '該当しない', area: '', date: '', address: '' },
-    { label: '北翔第九病院', area: '石狩', date: '2021-08-04', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: '養護老人ホームはるか豊潤', area: '胆振', date: '2021-08-09', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: 'しつげんタクシー', area: '釧路', date: '2021-08-14', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: '栗田病院', area: '胆振', date: '2021-08-21', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: '後志総合協会病院', area: '後志', date: '2021-08-24', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: '緑川新高校', area: '石狩', date: '2021-08-29', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
-    { label: '手稲総合病院', area: '石狩', date: '2021-09-03', address: '北海道〇△市〇△□〇△□〇△□〇△□〇△□〇△□' },
+    { label: '飲み会', area: '', date: '', address: '' },
+    { label: 'カラオケ', area: '', date: '', address: '' },
+    { label: 'ライブやクラブ等', area: '', date: '', address: '' },
+    { label: 'その他、発声の伴う集会', area: '', date: '', address: '' },
 ]
 
 export default {
@@ -148,23 +145,37 @@ export default {
     },
     methods: {
         updateFormData: function() {
+            // copy workData.sickList back into formData.healthRecord.
             if (this.$refs.baseform.validate()) {
-                // copy workData.locationList back into formData.locations.
-                let w = this.workData.locationList
+                let w = this.workData.sickList
                 for (let i = 0; i < w.length; i++) {
                     if (w[i].checked === true) {
-                        this.formData.locations[w[i].label] = w[i].dateList.map((x) => x.checked)
+                        this.formData.healthRecord[w[i].label] = {
+                            text: w[i].text === null ? '' : w[i].text,
+                            question: w[i].question,
+                        }
                     } else {
-                        delete(this.formData.locations[w[i].label])
+                        delete(this.formData.healthRecord[w[i].label])
                     }
                 }
                 // update formData
                 //this.$store.commit('updateFormData', this.formData)
             }
         },
-        movePage: function(pageName) {
-            if (this.$refs.baseform.validate()) {
-                this.updateFormData()
+        movePage: function(pageName, doSubmit) {
+            this.updateFormData()
+            if (doSubmit) {
+                utils.async_post(`${process.env.VUE_APP_SERVER_URL}/2`,
+                    JSON.parse(JSON.stringify(this.formData)))
+                    .then(ret => {
+                        if (ret.code == 200) {
+                            this.$router.push(pageName)
+                        } else {
+                            this.$store.state.responseData = ret
+                            this.$router.push('/error')
+                        }
+                    })
+            } else {
                 this.$router.push(pageName)
             }
         },

@@ -5,17 +5,17 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/input2')">
+            <v-btn icon @click="movePage('/input3')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力3
+                あなたの健康について(4/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input4')">
+            <v-btn icon @click="movePage('/input5')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -92,7 +92,7 @@
                 <v-btn
                     class="pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input4')"
+                    @click="movePage('/input5')"
                     block
                 >
                     <span>

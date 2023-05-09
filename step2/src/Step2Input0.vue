@@ -11,7 +11,7 @@
                 届出システム
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input1', false)">
+            <v-btn icon @click="movePage('/input2', false)">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -21,7 +21,7 @@
         <v-main>
             <div class="mx-3 my-5">
                 <h1 class="my-3">
-                    届出システム
+                    届出システム(1/8)
                 </h1>
 
                 <v-form
@@ -34,7 +34,7 @@
                     <div v-for="(g, i) in sickList" :key="i">
                         <v-container
                             class="ma-0 pa-1"
-                            v-if="g.question && g.label == '種別' || g.label == '氏名' || g.label == '所属' || g.label == '学籍番号/職員番号' || g.label == '電話番号'"
+                            v-if="g.question && g.label == '種別' || g.label == '氏名' || g.label == '所属' || g.label == '学籍番号/職員番号'"
                         >
                             <template class="my-3">
                                 <v-row style="margin:0;">
@@ -115,7 +115,7 @@
                 <v-btn
                     class="mt-10 pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input1', true)"
+                    @click="movePage('/input2', true)"
                     block
                 >
                     <span>

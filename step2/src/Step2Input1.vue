@@ -5,17 +5,17 @@
                    elevation="0"
                    dense
                    app>
-            <v-btn icon @click="movePage('/start', false)">
+            <v-btn icon @click="movePage('/input1', false)">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-left</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力１
+                基礎情報(2/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
-            <v-btn icon @click="movePage('/input2')">
+            <v-btn icon @click="movePage('/input3')">
                 <v-icon class="white--text"
                     link
                 >mdi-arrow-right</v-icon>
@@ -122,6 +122,33 @@
                             :items="nationsList"
                             >
                     </v-select>
+                    <div v-for="(g, i) in sickList" :key="i">
+                        <v-container
+                            class="mx-0 px-0 v-text-field"
+                            v-if="g.question && g.label == '電話番号'"
+                        >
+                            <template class="v-text-field">
+                                <v-row style="margin:0;">
+                                    <v-checkbox
+                                        class="d-none"
+                                        :label="g.label"
+                                        v-model="g.checked"
+                                        checked="true"
+                                        aria-checked="true"
+                                        dense
+                                    >
+                                    </v-checkbox>
+                                    <v-text-field
+                                        :label="g.question"
+                                        v-model="g.text"
+                                        :placeholder="g.checked ? g.placeholder : ''"
+                                        dense
+                                    >
+                                    </v-text-field>
+                                </v-row>
+                            </template>
+                        </v-container>
+                    </div>
                     <!-- 生活圏 -->
                     <!--
                     <v-text-field
@@ -245,7 +272,7 @@
                 <v-btn
                     class="pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/input2')"
+                    @click="movePage('/input3')"
                     block
                 >
                     <span>
@@ -258,8 +285,10 @@
     </v-app>
 </template>
 
+<script type="module" src="/common/healthProfile.js" async defer></script>
 <script>
 import utils from '@/common/utils.js'
+import healthProfile from "@/common/healthProfile.js" 
 
 const lgList = {
     '北海道': [ 
@@ -975,6 +1004,53 @@ export default {
         } else {
             this.activityList = this.formData.activities
         }
+
+        this.workData = this.$store.state.workData
+        // initialize healthRecord
+        if (!this.formData.healthRecord) {
+            this.formData.healthRecord = {}
+        }
+        // create sickList
+        if (!this.workData.sickList) {
+            this.workData.sickList = []
+            let w = this.workData.sickList
+            for (let i = 0; i < healthProfile.length; i++) {
+                let profile = healthProfile[i]
+                let ks = Object.keys(this.formData.healthRecord).filter(k => k === profile.label)
+                if (ks.length == 1) {
+                    let obj = this.formData.healthRecord[ks[0]]
+                    // found the label in formData.healthRecord
+                    if (obj.label == '既往歴' || obj.label == '接種回数' || obj.label == '感染ルート' || obj.label == 'ワクチンの種類' || obj.label == '種別' || obj.label == '氏名' || obj.label == '所属' || obj.label == '学籍番号/職員番号' || obj.label == '電話番号') {
+                        w.push(Object.assign({}, profile, {
+                            checked: true,
+                            text: '',
+                        }))
+                    } else {
+                        w.push(Object.assign({}, profile, {
+                            checked: obj.text !== null ? true : false,
+                            text: obj.text,
+                        }))
+                    }
+                } else if (ks.length > 1) {
+                    throw `ERROR: label=${profile.label} ks.length = ${ks.length}`
+                } else {
+                    // ks == []: LABELが存在しなかった。
+                    // ks == undefined: サーバからhealthRecordを渡された。
+                    if (profile.label == '既往歴' || profile.label == '接種回数' || profile.label == '感染ルート' || profile.label == 'ワクチンの種類' ||  profile.label == '種別' || profile.label == '氏名' || profile.label == '所属' || profile.label == '学籍番号/職員番号' || profile.label == '電話番号') {
+                        w.push(Object.assign({}, profile, {
+                            checked: true,
+                            text: '',
+                        }))
+                    } else {
+                        w.push(Object.assign({}, profile, {
+                            checked: false,
+                            text: null,
+                        }))
+                    }
+                }
+            }
+        }
+        this.sickList = this.workData.sickList
     }
 }
 </script>

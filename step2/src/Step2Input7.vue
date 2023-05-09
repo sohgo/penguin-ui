@@ -12,7 +12,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-app-bar-title class="white--text">
-                入力6
+                感染の機会について(6/8)
             </v-app-bar-title>
             <v-spacer></v-spacer>
             <v-btn icon @click="movePage('/input7', false)">
@@ -67,7 +67,7 @@
                 <v-btn
                     class="pa-5 white--text"
                     color="#3DB0F3"
-                    @click="movePage('/break', true)"
+                    @click="movePage('/input7', false)"
                     block
                 >
                     <span>

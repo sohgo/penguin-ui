@@ -130,7 +130,7 @@ export default {
                     .then(ret => {
                         this.$store.state.authed = true
                             this.$store.state.formData = ret.data
-                            this.$router.push('/start')
+                            this.$router.push('/input1')
                     })
             }
         },
