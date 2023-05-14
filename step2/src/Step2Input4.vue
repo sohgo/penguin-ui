@@ -45,6 +45,20 @@
                     </v-chip>
                 </v-btn>
 
+                <template class="my-3">
+                    <v-checkbox 
+                        v-model="mycheck"
+                        label="入力データを研究のために提供する"
+                        value="1"
+                    />
+                    <div class="mb-5 p-3">
+                        <small class="grey--text text--darken-1">感染症対策研究に役立てるため、北見工大では、学内で発声した感染に関するさまざまなデータのオープンデータ化を進めています。<br />
+                        提供頂いたデータは、個人が識別できないよう匿名化したうえで、データセットに 追加させて頂きます。<br />
+                        なお、この同意は、いつでも撤回して頂くことが可能です。<br />
+                        詳しくは、「<a href="#">こちら</a>」の研究説明をご確認下さい。</small>
+                    </div>
+                </template>
+
                 <v-btn
                     class="white--text"
                     color="#3DB0F3"
@@ -85,6 +99,7 @@ export default {
         return {
             valid: false,
             formData: null,
+            mycheck: '1',
             /*
             ## formData.dailyActivities
             - 14日間の行動履歴

@@ -33,10 +33,10 @@
 
                     <div v-for="(g, i) in sickList" :key="i">
                         <v-container
-                            class="ma-0 pa-1"
+                            class="ma-0 pa-0"
                             v-if="g.question && g.label == '種別' || g.label == '氏名' || g.label == '所属' || g.label == '学籍番号/職員番号'"
                         >
-                            <template class="my-3">
+                            <template class="my-3 pa-1">
                                 <v-row style="margin:0;">
                                     <v-checkbox
                                         class="d-none"
@@ -47,8 +47,8 @@
                                         dense
                                     >
                                     </v-checkbox>
-                                    <div v-if="g.label == '種別'">
-                                        <v-radio-group v-model="g.text">
+                                    <div v-if="g.label == '種別'" @load="toggleAreaPositive(g.text)">
+                                        <v-radio-group v-model="g.text" @change="toggleAreaPositive(g.text)">
                                             <v-radio
                                                 label="陽性報告"
                                                 id="option1"
@@ -66,13 +66,18 @@
                                             ></v-radio>
                                         </v-radio-group>
                                     </div>
-                                    <v-text-field v-else
-                                        :label="g.question"
-                                        v-model="g.text"
-                                        :placeholder="g.checked ? g.placeholder : ''"
-                                        dense
+                                    <template v-else
+                                        class="area-positive"
                                     >
-                                    </v-text-field>
+                                        <v-text-field
+                                            :label="g.question"
+                                            v-model="g.text"
+                                            :placeholder="g.checked ? g.placeholder : ''"
+                                            dense
+                                            v-show="isAreaPositiveVisible"
+                                        >
+                                        </v-text-field>
+                                    </template>
                                 </v-row>
                             </template>
                         </v-container>
@@ -86,12 +91,15 @@
                     max-height="70%"
                     >
                     <template 
-                        v-slot:activator="{ on, attrs }">
+                        class=""
+                        v-slot:activator="{ on, attrs }"
+                        >
                         <v-btn
                             color="#28a745"
                             v-bind="attrs"
                             v-on="on"
-                            class="pa-5 white--text"
+                            class="area-positive pa-5 white--text"
+                            v-show="isAreaPositiveVisible"
                         >
                             陽性証明添付
                         </v-btn>
@@ -179,7 +187,8 @@ export default {
                         }, ...
                     ]
                 */
-            ffhsUrl: ''
+            ffhsUrl: '',
+            isAreaPositiveVisible: false
         }
     },
     methods: {
@@ -218,8 +227,17 @@ export default {
                 this.$router.push(pageName)
             }
         },
+        toggleAreaPositive: function(radioButtonValue) {
+            if (radioButtonValue === '1') {
+                this.isAreaPositiveVisible = true
+            } else {
+                this.isAreaPositiveVisible = false
+            }
+        },
     },
     mounted: function() {
+        //this.toggleAreaPositive(0);
+
         this.formData = this.$store.state.formData
         this.workData = this.$store.state.workData
         // initialize healthRecord

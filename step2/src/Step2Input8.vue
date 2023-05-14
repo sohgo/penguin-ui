@@ -53,6 +53,7 @@
                                     v-model="a.checked"
                                     @change="changeMedical(a)"
                                     dense
+                                    :disabled="j !== 0 && medicalList[0].checked"
                                 >
                                 </v-checkbox>
                             </v-row>
@@ -61,30 +62,26 @@
 
                     <div v-for="(g, i) in sickList" :key="i">
                         <v-div
-                            class="ma-0 pa-1"
+                            class="ma-0 pa-0"
                             v-if="g.question && g.label == '既往歴'"
                         >
-                            <template class="my-3">
-                                <v-row style="margin:0;">
-                                    <v-checkbox
-                                        class="d-none"
-                                        :label="g.label"
-                                        v-model="g.checked"
-                                        checked="true"
-                                        aria-checked="true"
-                                        dense
-                                    >
-                                    </v-checkbox>
-                                    <v-text-field
-                                        class="d-none"
-                                        :label="g.question"
-                                        v-model="g.text"
-                                        :placeholder="g.checked ? g.placeholder : ''"
-                                        dense
-                                    >
-                                    </v-text-field>
-                                </v-row>
-                            </template>
+                            <v-checkbox
+                                class="d-none"
+                                :label="g.label"
+                                v-model="g.checked"
+                                checked="true"
+                                aria-checked="true"
+                                dense
+                            >
+                            </v-checkbox>
+                            <v-text-field
+                                class="d-none"
+                                :label="g.question"
+                                v-model="g.text"
+                                :placeholder="g.checked ? g.placeholder : ''"
+                                dense
+                            >
+                            </v-text-field>
                         </v-div>
                     </div>
                 </v-form>

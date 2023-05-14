@@ -41,15 +41,18 @@
                 >
 
                     <v-container
-                        class="ma-0 pa-1"
+                        class="ma-0 pa-0"
                         v-for="(g, i) in sickList"
                         :key="i"
                     >
-                        <div v-if="g.label != '既往歴' && g.label != '接種回数' && g.label != 'ワクチンの種類' && g.label != '感染歴' && g.label != '感染ルート' && g.label != '種別' && g.label != '氏名' && g.label != '所属' && g.label != '学籍番号/職員番号' && g.label != '電話番号'">
+                        <div v-if="g.label != '既往歴' && g.label != '接種回数' && g.label != 'ワクチンの種類' && g.label != '感染歴' && g.label != '感染ルート' && g.label != '種別' && g.label != '氏名' && g.label != '所属' && g.label != '学籍番号/職員番号' && g.label != '電話番号'"
+                            class="ma-0 pa-1"
+                        >
                             <v-row>
                                 <v-checkbox
                                     :label="g.label"
                                     v-model="g.checked"
+                                    :disabled="i !== 0 && sickList[0].checked"
                                     dense
                                 >
                                 </v-checkbox>
