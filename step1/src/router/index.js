@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Beginning from '@/Beginning'
+import MainBeginning from '@/MainBeginning'
 import Step1Input from '@/Step1Input'
 import Step1End from '@/Step1End'
-import Error from '@/common/Error'
+import MainError from '@/common/MainError'
 import NotFound from '@/common/NotFound'
 
 Vue.use(VueRouter)
@@ -11,8 +11,8 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: 'Beginning',
-        component: Beginning
+        name: 'MainBeginning',
+        component: MainBeginning
     },
     {
         path: '/Step1Input',
@@ -26,8 +26,8 @@ const routes = [
     },
     {
         path: '/Error',
-        name: 'Error',
-        component: Error
+        name: 'MainError',
+        component: MainError
     },
     {
         path: '/:pathMatch(.*)*',

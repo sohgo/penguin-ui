@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import Entry from '@/Auth'
-import Auth from '@/Auth'
+import MainEntry from '@/MainAuth'
+import MainAuth from '@/MainAuth'
 import AuthError from '@/AuthError'
 import Step2Input0 from '@/Step2Input0'
 import Step2Input1 from '@/Step2Input1'
@@ -15,8 +15,8 @@ import Step2Input7 from '@/Step2Input7'
 import Step2Input8 from '@/Step2Input8'
 import InputDaily from '@/InputDaily'
 import Step2Break from '@/Step2Break'
-import End from '@/End'
-import Error from '@/common/Error'
+import MainEnd from '@/MainEnd'
+import MainError from '@/common/MainError'
 import NotFound from '@/common/NotFound'
 
 Vue.use(VueRouter)
@@ -24,14 +24,14 @@ Vue.use(VueRouter)
 const routes = [
     {
         path: '/',
-        name: 'Entry',
-        component: Entry,
+        name: 'MainEntry',
+        component: MainEntry,
         meta: { authRequired: false },
     },
     {
         path: '/auth',
         name: 'auth',
-        component: Auth,
+        component: MainAuth,
         meta: { authRequired: false }
     },
     {
@@ -103,7 +103,7 @@ const routes = [
     {
         path: '/end',
         name: 'end',
-        component: End,
+        component: MainEnd,
         meta: { authRequired: true },
     },
     {
@@ -115,7 +115,7 @@ const routes = [
     {
         path: '/error',
         name: 'error',
-        component: Error,
+        component: MainError,
         meta: { authRequired: false },
     },
     {
