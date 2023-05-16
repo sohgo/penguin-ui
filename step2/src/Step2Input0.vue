@@ -66,7 +66,7 @@
                                             ></v-radio>
                                         </v-radio-group>
                                     </div>
-                                    <template v-else
+                                    <div v-else
                                         class="area-positive"
                                     >
                                         <v-text-field
@@ -77,7 +77,7 @@
                                             v-show="isAreaPositiveVisible"
                                         >
                                         </v-text-field>
-                                    </template>
+                                    </div>
                                 </v-row>
                             </template>
                         </v-container>
@@ -91,7 +91,6 @@
                     max-height="70%"
                     >
                     <template 
-                        class=""
                         v-slot:activator="{ on, attrs }"
                         >
                         <v-btn
